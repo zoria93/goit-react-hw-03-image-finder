@@ -1,11 +1,13 @@
-import { Component } from 'react';
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { List } from 'components/ImageGallery/ImageGallery.styled';
 
-export class ImageGallery extends Component {
-  render() {
-    return (
-      <div>
-        <p>{this.props.imageName}</p>
-      </div>
-    );
-  }
-}
+export const ImageGallery = ({ gallery }) => {
+  return (
+    <List className="gallery">
+      {gallery !== null &&
+        gallery.map(({ id, webformatURL }) => {
+          return <ImageGalleryItem key={id} webformatURL={webformatURL} />;
+        })}
+    </List>
+  );
+};

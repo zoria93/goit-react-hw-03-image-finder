@@ -1,4 +1,10 @@
 import { Component } from 'react';
+import { resetPage } from 'components/services/api';
+import {
+  Header,
+  SearchForm,
+  Button,
+} from 'components/Searchbar/Searchbar.styled';
 
 export class Searchbar extends Component {
   state = {
@@ -7,7 +13,6 @@ export class Searchbar extends Component {
 
   handleNameChange = e => {
     this.setState({ imageName: e.target.value });
-    console.log(e.target.value);
   };
 
   handleSubmit = e => {
@@ -19,15 +24,16 @@ export class Searchbar extends Component {
     }
     this.props.onSubmit(imageName);
     this.setState({ imageName: '' });
+    resetPage();
   };
 
   render() {
     return (
-      <header>
-        <form onSubmit={this.handleSubmit} className="form">
-          <button type="submit" className="button">
+      <Header>
+        <SearchForm onSubmit={this.handleSubmit} className="form">
+          <Button type="submit" className="button">
             <span className="button-label">Search</span>
-          </button>
+          </Button>
 
           <input
             className="input"
@@ -38,8 +44,8 @@ export class Searchbar extends Component {
             onChange={this.handleNameChange}
             placeholder="Search images and photos"
           />
-        </form>
-      </header>
+        </SearchForm>
+      </Header>
     );
   }
 }
