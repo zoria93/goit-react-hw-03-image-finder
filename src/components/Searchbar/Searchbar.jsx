@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { resetPage } from 'components/services/api';
 import {
   Header,
@@ -20,7 +21,7 @@ export class Searchbar extends Component {
     const { imageName } = this.state;
     e.preventDefault();
     if (this.state.imageName.trim() === '') {
-      alert('Напишіть імя картинки');
+      alert('Fill in Search query');
       return;
     }
     this.props.onSubmit(imageName);
@@ -52,3 +53,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

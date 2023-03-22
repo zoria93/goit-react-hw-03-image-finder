@@ -1,6 +1,4 @@
 import { Component } from 'react';
-import React from 'react';
-import { ToastContainer } from 'react-toastify';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { incrementPage, getImages } from 'components/services/api';
@@ -13,18 +11,22 @@ export class App extends Component {
     imageName: null,
     images: [],
     loading: false,
+    renderBtn: true,
   };
 
   async componentDidUpdate(prevProps, prevState) {
     const prevName = prevState.imageName;
-    console.log(prevName);
     const nextName = this.state.imageName;
-    console.log(nextName);
     if (prevName !== nextName) {
       this.setState({ loading: true });
-
       getImages(nextName)
-        .then(images => this.setState({ images: images.hits }))
+        .then(images => {
+          if (images.hits.length !== 0) {
+            this.setState({ images: images.hits });
+          } else {
+            alert(`No photo with name ${nextName}`);
+          }
+        })
         .catch(error => console.log(error.message))
         .finally(() => this.setState({ loading: false }));
     }
@@ -40,7 +42,15 @@ export class App extends Component {
     incrementPage();
     this.setState({ loading: true });
     getImages(nextName)
-      .then(images => images.hits)
+      .then(images => {
+        if (this.state.images.length === images.totalHits) {
+          this.setState({ renderBtn: false });
+        }
+        if (images) {
+          const imagesHits = images.hits;
+          return imagesHits;
+        }
+      })
       .then(imagesHits =>
         this.setState(prevState => {
           return { images: [...prevState.images, ...imagesHits] };
@@ -52,27 +62,13 @@ export class App extends Component {
 
   render() {
     const gallery = this.state.images;
-    const { loading } = this.state;
+    const { loading, renderBtn } = this.state;
     return (
       <Conteiner>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        {/* Same as */}
-        <ToastContainer />
         <Searchbar onSubmit={this.handleFormSubmit} />
-        {this.state.images.length !== 0 && <ImageGallery gallery={gallery} />}
+        <ImageGallery gallery={gallery} />
         {loading && <Loader />}
-        {this.state.images.length !== 0 && (
+        {this.state.images.length !== 0 && renderBtn && (
           <Button onClick={this.handleButtonClick} />
         )}
       </Conteiner>

@@ -13,7 +13,6 @@ export const resetPage = () => {
 };
 
 export const getImages = async name => {
-  console.log(name);
   const response = await fetch(
     `${baseUrl}?key=${KEY_API}&q=${name}&image_type=photo&orientation=horizontal&safesearch=true&page=${pageNumber}&per_page=${perPage}`
   );
@@ -22,5 +21,5 @@ export const getImages = async name => {
 
     return images;
   }
-  return Promise.reject(new Error(`Немає картинки з назвою ${name}`));
+  return Promise.reject(new Error(`There is no photos for ${name} query `));
 };
