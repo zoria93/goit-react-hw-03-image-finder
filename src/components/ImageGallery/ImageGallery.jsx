@@ -5,8 +5,14 @@ export const ImageGallery = ({ gallery }) => {
   return (
     <List className="gallery">
       {gallery !== null &&
-        gallery.map(({ id, webformatURL }) => {
-          return <ImageGalleryItem key={id} webformatURL={webformatURL} />;
+        gallery.map(({ id, webformatURL, largeImageURL }) => {
+          return (
+            <ImageGalleryItem
+              key={id}
+              largeImageURL={largeImageURL}
+              webformatURL={webformatURL}
+            />
+          );
         })}
     </List>
   );

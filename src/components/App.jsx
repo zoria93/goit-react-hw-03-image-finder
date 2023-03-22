@@ -1,8 +1,9 @@
 import { Component } from 'react';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { incrementPage, getImages } from 'components/services/api';
-
 import { Button } from 'components/Button/Button';
 import { Conteiner } from 'components/App.styled';
 import { Loader } from 'components/Loader/Loader';
@@ -10,7 +11,7 @@ import { Loader } from 'components/Loader/Loader';
 export class App extends Component {
   state = {
     imageName: null,
-    images: null,
+    images: [],
     loading: false,
   };
 
@@ -24,7 +25,6 @@ export class App extends Component {
 
       getImages(nextName)
         .then(images => this.setState({ images: images.hits }))
-
         .catch(error => console.log(error.message))
         .finally(() => this.setState({ loading: false }));
     }
@@ -52,14 +52,29 @@ export class App extends Component {
 
   render() {
     const gallery = this.state.images;
-    console.log(gallery);
     const { loading } = this.state;
     return (
       <Conteiner>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        {/* Same as */}
+        <ToastContainer />
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery gallery={gallery} />
+        {this.state.images.length !== 0 && <ImageGallery gallery={gallery} />}
         {loading && <Loader />}
-        <Button onClick={this.handleButtonClick} />
+        {this.state.images.length !== 0 && (
+          <Button onClick={this.handleButtonClick} />
+        )}
       </Conteiner>
     );
   }
