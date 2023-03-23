@@ -1,6 +1,5 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { resetPage } from 'components/services/api';
+import { Component } from 'react';
 import {
   Header,
   SearchForm,
@@ -26,7 +25,6 @@ export class Searchbar extends Component {
     }
     this.props.onSubmit(imageName);
     this.setState({ imageName: '' });
-    resetPage();
   };
 
   render() {

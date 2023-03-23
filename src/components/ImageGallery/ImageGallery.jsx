@@ -4,19 +4,22 @@ import PropTypes from 'prop-types';
 
 export const ImageGallery = ({ gallery }) => {
   return (
-    <List className="gallery">
-      {gallery !== null &&
-        gallery.map(({ id, webformatURL, largeImageURL, tags }) => {
-          return (
-            <ImageGalleryItem
-              key={id}
-              largeImageURL={largeImageURL}
-              webformatURL={webformatURL}
-              tags={tags}
-            />
-          );
-        })}
-    </List>
+    <>
+      {gallery.length > 0 && (
+        <List className="gallery">
+          {gallery.map(({ id, webformatURL, largeImageURL, tags }) => {
+            return (
+              <ImageGalleryItem
+                key={id}
+                largeImageURL={largeImageURL}
+                webformatURL={webformatURL}
+                tags={tags}
+              />
+            );
+          })}
+        </List>
+      )}
+    </>
   );
 };
 
